@@ -1,0 +1,110 @@
+body {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+}
+
+#calculator-body {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    width: 425px;
+    height: 801px;
+
+    background-color: #414141FF;
+    border-radius: 40px;
+    border-style: solid;
+    border-color: black;
+    border-width: 2px;
+}
+
+#screen {
+    max-width: 376px;
+    max-height: 227px;
+    height: 100%;
+    width: 100%;
+    background-color: #a3ad96FF;
+    border-radius: 10px;
+    border-style: solid;
+    border-color: black;
+    border-width: 2px;
+
+}
+
+#keys {
+    display:flex;
+    flex-direction: column;
+    gap: 18px;
+    margin-top: 53px;
+    max-width: 373px;
+    width: 100%;
+}
+
+.key-row {
+    display: flex;
+    gap: 13px;
+    width: 100%;
+}
+
+button {
+    text-align: center;
+    line-height: 100%;
+    border-radius: 7px;
+}
+
+#key-row-1 button,
+#key-row-2 button,
+#key-row-3 button,
+#key-row-4 button 
+{
+    background-color: rgb(146, 147, 149);
+    color: white;
+    max-width: 84px;
+    max-height: 60px;
+    width: 100%;
+    height: 100%;
+    border-style: solid;
+    border-width: 2px;
+
+    font-size: 52px;
+    font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
+}
+
+#key-row-5 button {
+    background: #7fcc5fFF;
+    color: white;
+    width: 100%;
+    border-style: solid;
+    border-width: 2px;
+    border-color: #4b753aFF;
+    font-size: 52px;
+    font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
+}
+
+#key-row-5 #del {
+    border-bottom-left-radius: 20px;
+}
+
+#key-row-5 #equal {
+    border-bottom-right-radius: 20px;
+}
+
+#key-row-1 #seven {
+    border-top-left-radius: 20px;
+}
+
+#key-row-1 #add {
+    border-top-right-radius: 20px;
+}
+
+#dot-img,
+#negative-symbol-img,
+#divide-img,
+#multiply-img,
+#add-img,
+#subtract-img {
+    display: block;
+    margin: auto;
+}
