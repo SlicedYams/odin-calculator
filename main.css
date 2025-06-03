@@ -24,17 +24,25 @@ body {
 #screen {
     display: flex;
     box-sizing: border-box;
-    flex-direction: column;
-    justify-content: space-between;
     width: 376px;
     height: 227px;
-    background-color: #a3ad96FF;
+    background-color: rgb(163, 173, 150);
     border-radius: 10px;
     border-style: solid;
     border-color: black;
     border-width: 2px;
     padding: 20px;
 }
+
+#inner-screen {
+    overflow-x: hidden;
+    display:flex;
+    flex-direction: column;
+    justify-content: space-between;
+    height: 100%;
+    width: 100%;
+}
+
 
 #screen #expression {
     display: flex;
@@ -44,7 +52,6 @@ body {
 #screen #expression #operator {
     margin: 0px 5px;
     height: 15px;
-    fill:rgb(79, 82, 74);
 }
 
 #screen p,
@@ -55,7 +62,17 @@ body {
     color:rgb(79, 82, 74);
 }
 
+#answer-div {
+    background-color: rgb(79, 82, 74);
+    box-sizing: border-box;
+    width: 100%;
+    border-bottom-left-radius: 6px;
+    border-bottom-right-radius: 6px;
+}
 
+p#answer {
+    color: rgb(163, 173, 150);
+}
 
 #keys {
     display:flex;
