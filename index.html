@@ -13,8 +13,9 @@
                 <p id="operand-left"></p>
                 <img src="" id="operator">
                 <p id="operand-right"></p>
+                <p id="cursor">|</p>
             </div>
-            <p id="answer">10</p>
+            <p id="answer"></p>
         </div>
         <div id="keys">
             <div id="key-row-1" class="key-row">
@@ -64,27 +65,48 @@
                 });
             });
         }
-
+      
         function updateScreen() {
             let operandLeft = document.querySelector("#screen #expression #operand-left");
             let operandRight = document.querySelector("#screen #expression #operand-right");
             let operatorSVG = document.querySelector("#screen #expression #operator");
-            operandLeft.textContent = '';
-            operandRight.textContent = '';
+            let screenAnswer = document.querySelector("#screen #answer");
+            let empty = '';
+            operandLeft.textContent = empty;
+            operandRight.textContent = empty;
+            screenAnswer.textContent = empty;
             operatorSVG.setAttribute("src", "");
+            operatorSVG.style.margin = 0;
+            if(operator != '') {
+                let operatorSVGPath = "./img/expression-" + operator + ".svg";
+                operatorSVG.style.margin = "0px 5px";
+            }
             let operatorSVGPath = "./img/expression-" + operator + ".svg";
-            console.log(operatorSVGPath);
-            if(currOperand != '' && operandStore == '' && operator == '') {
+            if(currOperand != empty && operandStore == empty && operator == empty && answer == empty) {
                 operandLeft.textContent = currOperand;
             }
-            else if(currOperand == '' && operandStore != '' && operator != '') {
+            else if(currOperand != empty && operandStore == empty && operator == empty && answer != empty) {
+                operandLeft.textContent = currOperand;
+                screenAnswer.textContent = answer;
+            }
+            else if(currOperand == empty && operandStore != empty && operator != empty && answer == empty) {
                 operandLeft.textContent = operandStore;
                 operatorSVG.setAttribute("src", operatorSVGPath);
             }
-            else if(currOperand != '' && operandStore != '' && operator != '') {
+            else if(currOperand != empty && operandStore != empty && operator != empty && answer == empty) {
                 operandLeft.textContent = operandStore;
                 operandRight.textContent = currOperand;
                 operatorSVG.setAttribute("src", operatorSVGPath);
+            }
+            else if(currOperand != empty && operandStore != empty && operator != empty && answer != empty) {
+                operandLeft.textContent = operandStore;
+                operandRight.textContent = currOperand;
+                operatorSVG.setAttribute("src", operatorSVGPath);
+                screenAnswer.textContent = answer;
+            }
+            //if everything but the answer is empty, this is an error message 
+            else if(currOperand == empty && operandStore == empty && operator == empty && answer != empty) {
+                screenAnswer.textContent = answer;
             }
         }
 
@@ -105,86 +127,136 @@
         }
 
         function operandNumberOrFunc(id) {
+            let number = '';
             switch(id) {
                 case "zero":
-                    currOperand += 0 + '';
+                    number += 0;
                     break;
                 case "one":
-                    currOperand += 1 + '';
+                    number += 1;
                     console.log(currOperand);
                     break;
                 case "two":
-                    currOperand += 2 + '';
+                    number += 2;
                     break;
                 case "three":
-                    currOperand += 3 + '';
+                    number += 3;
                     break;
                 case "four":
-                    currOperand += 4 + '';
+                    number += 4;
                     break;
                 case "five":
-                    currOperand += 5 + '';
+                    number += 5;
                     break;
                 case "six":
-                    currOperand += 6 + '';
+                    number += 6;
                     break;
                 case "seven":
-                    currOperand += 7 + '';
+                    number += 7;
                     break;
                 case "eight":
-                    currOperand += 8 + '';
+                    number += 8;
                     break;
                 case "nine":
-                    currOperand += 9 + '';
+                    number += 9;
                     break;
                 case "add":
                 case "subtract":
                 case "multiply":
                 case "divide":
-                    //if there is a current expression that hasn't been evaluated yet
-                    if(operandStore != '' && currOperand != '' && operator != '' && answer == '') {
-                        //evaluate the expression
-                        answer = (operate(operator, Number(operandStore), Number(currOperand)));
-                        console.log(answer);
-                        currOperand = '';
-                        operandStore = '';
-                        operator = id;
-                        //make the answer operand 1
-                        //assign the new operator to the global operator
-                    }
                     //if there is only one operand 
-                    else if(currOperand != '' && operandStore == '') {
+                    if(currOperand != '' && operandStore == '' && operator == '' && answer == '') {
                         operandStore = currOperand;
                         currOperand = '';
                         operator = id;
                     }
-                    else if(currOperand == '' && operandStore != '') {
+                    //if back to back operators, swap operator
+                    else if(operandStore != '' && currOperand == '' && operator != '' && answer == '') {
                         operator = id;
                     }
+                    //if there is a current expression that hasn't been evaluated yet
+                    else if(operandStore != '' && currOperand != '' && operator != '' && answer == '') {
 
+                        if(divideByZero(currOperand, operator)) {
+                            operandStore = '';
+                            currOperand = '';
+                            operator = ''
+                            answer = "You cannot divide by zero!";
+                            console.log("divide by zero error!");
+                        }
+                        else {
+                            operandStore = (operate(operator, Number(operandStore), Number(currOperand)));
+                            console.log(operandStore);
+                            currOperand = '';
+                            operator = id;
+                        }
+                    }
+                    else if(operandStore != '' && currOperand != '' && operator != '' && answer != '') {
+                        operandStore = (operate(operator, Number(operandStore), Number(currOperand)));
+                        console.log(operandStore);
+                        currOperand = '';
+                        operator = id;
+                        answer = '';
+                    }
                     break;
                 case "equal":
+                    if(operandStore == '' && currOperand != '' && operator == '' && answer == '') {
+                        answer = currOperand;
+                    }
                     if(operandStore != '' && currOperand != '' && operator != '') {
-                        //evaluate the expression
-                        currOperand = (operate(operator, Number(operandStore), Number(currOperand)));
-                        console.log(currOperand);
-                        operandStore = '';
-                        operator = '';
-                        //make the answer operand 1
-                        //assign the new operator to the global operator
+                        if(divideByZero(currOperand, operator)) {
+                            operandStore = '';
+                            currOperand = '';
+                            operator = ''
+                            answer = "You cannot divide by zero!";
+                            console.log("divide by zero error!");
+                        }
+                        else {
+                            answer = (operate(operator, Number(operandStore), Number(currOperand)));
+                            console.log(answer);
+                        }
                     }
                     break;
                 case "del":
                     operandStore = '';
                     currOperand = '';
                     operator = ''
+                    answer = '';
                     break;
             }
+
+            if(number != '' && answer == '') {
+                currOperand += number;
+            }
+            else if(number != '' && answer != '') {
+                currOperand = number;
+                operandStore = '';
+                operator = '';
+                answer = '';
+            }
+        
             updateScreen();
         }
 
-        
+        function divideByZero(operand, operator) {
+            if(operand == '0' && operator == 'divide') {
+                return true;
+            }
+            else {
+                return false;
+            }
+        }
 
+        //blinking
+        setInterval(() => {
+            let cursor = document.querySelector("#screen #cursor");
+            if(cursor.textContent == "|") {
+                cursor.textContent = "";
+            }
+            else {
+                cursor.textContent = "|";
+            }
+        }, 500);
     </script>
 </body>
 </html>

@@ -47,12 +47,15 @@ body {
     fill:rgb(79, 82, 74);
 }
 
-#screen p {
+#screen p,
+#screen cursor {
     margin: 0;
     font-weight: bold;
     font-size: 30px;
     color:rgb(79, 82, 74);
 }
+
+
 
 #keys {
     display:flex;
