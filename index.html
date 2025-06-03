@@ -9,6 +9,12 @@
 <body>
     <div id="calculator-body">
         <div id="screen">
+            <div id="expression">
+                <p id="operand-left"></p>
+                <img src="" id="operator">
+                <p id="operand-right"></p>
+            </div>
+            <p id="answer">10</p>
         </div>
         <div id="keys">
             <div id="key-row-1" class="key-row">
@@ -41,5 +47,144 @@
             </div>
         </div>
     </div>
+    <script>
+        let operandStore = '';
+        let currOperand = '';
+        let operator = '';
+        let answer = ''
+
+        //add event listeners for all buttons
+        for(let i = 1; i <=5; i++) {
+            let id = "#key-row-" + i + " button";
+            let row = document.querySelectorAll(id);
+            row.forEach((button) => {
+                button.addEventListener("click", () => {
+                    operandNumberOrFunc(button.id);
+                    console.log(button.id);
+                });
+            });
+        }
+
+        function updateScreen() {
+            let operandLeft = document.querySelector("#screen #expression #operand-left");
+            let operandRight = document.querySelector("#screen #expression #operand-right");
+            let operatorSVG = document.querySelector("#screen #expression #operator");
+            operandLeft.textContent = '';
+            operandRight.textContent = '';
+            operatorSVG.setAttribute("src", "");
+            let operatorSVGPath = "./img/expression-" + operator + ".svg";
+            console.log(operatorSVGPath);
+            if(currOperand != '' && operandStore == '' && operator == '') {
+                operandLeft.textContent = currOperand;
+            }
+            else if(currOperand == '' && operandStore != '' && operator != '') {
+                operandLeft.textContent = operandStore;
+                operatorSVG.setAttribute("src", operatorSVGPath);
+            }
+            else if(currOperand != '' && operandStore != '' && operator != '') {
+                operandLeft.textContent = operandStore;
+                operandRight.textContent = currOperand;
+                operatorSVG.setAttribute("src", operatorSVGPath);
+            }
+        }
+
+        function operate(operator, operand1, operand2) {
+            console.log("Operating on " + operand1 + " " + operator + " " + operand2);
+            if(operator == "add") { 
+                return operand1 + operand2;
+            }
+            else if(operator == "subtract") {
+                return operand1 - operand2;
+            }
+            else if(operator == "multiply") {
+                return operand1 * operand2;
+            }
+            else if(operator == "divide") {
+                return operand1 / operand2;
+            }
+        }
+
+        function operandNumberOrFunc(id) {
+            switch(id) {
+                case "zero":
+                    currOperand += 0 + '';
+                    break;
+                case "one":
+                    currOperand += 1 + '';
+                    console.log(currOperand);
+                    break;
+                case "two":
+                    currOperand += 2 + '';
+                    break;
+                case "three":
+                    currOperand += 3 + '';
+                    break;
+                case "four":
+                    currOperand += 4 + '';
+                    break;
+                case "five":
+                    currOperand += 5 + '';
+                    break;
+                case "six":
+                    currOperand += 6 + '';
+                    break;
+                case "seven":
+                    currOperand += 7 + '';
+                    break;
+                case "eight":
+                    currOperand += 8 + '';
+                    break;
+                case "nine":
+                    currOperand += 9 + '';
+                    break;
+                case "add":
+                case "subtract":
+                case "multiply":
+                case "divide":
+                    //if there is a current expression that hasn't been evaluated yet
+                    if(operandStore != '' && currOperand != '' && operator != '' && answer == '') {
+                        //evaluate the expression
+                        answer = (operate(operator, Number(operandStore), Number(currOperand)));
+                        console.log(answer);
+                        currOperand = '';
+                        operandStore = '';
+                        operator = id;
+                        //make the answer operand 1
+                        //assign the new operator to the global operator
+                    }
+                    //if there is only one operand 
+                    else if(currOperand != '' && operandStore == '') {
+                        operandStore = currOperand;
+                        currOperand = '';
+                        operator = id;
+                    }
+                    else if(currOperand == '' && operandStore != '') {
+                        operator = id;
+                    }
+
+                    break;
+                case "equal":
+                    if(operandStore != '' && currOperand != '' && operator != '') {
+                        //evaluate the expression
+                        currOperand = (operate(operator, Number(operandStore), Number(currOperand)));
+                        console.log(currOperand);
+                        operandStore = '';
+                        operator = '';
+                        //make the answer operand 1
+                        //assign the new operator to the global operator
+                    }
+                    break;
+                case "del":
+                    operandStore = '';
+                    currOperand = '';
+                    operator = ''
+                    break;
+            }
+            updateScreen();
+        }
+
+        
+
+    </script>
 </body>
 </html>
